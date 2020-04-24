@@ -1,4 +1,4 @@
-package sample;
+package sample.Verfahren;
 
 public abstract class Verfahren {
     private String function;

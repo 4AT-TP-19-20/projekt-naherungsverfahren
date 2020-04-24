@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane minHeight="600" minWidth="800" stylesheets="@Styles/styles.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Scenes.Controller">
+    <center>
+        <HBox spacing="50">
+            <VBox spacing="10">
+                <Label text="Funktion" />
+                <Label text="Intervall" />
+                <Label text="Anzahl Kommastellen" />
+                <Label text="Maximale Anzahl von Einträgen" />
+            </VBox>
+            <VBox spacing="10">
+                <TextField fx:id="txt_Function" promptText="Funktion" />
+                <HBox>
+                    <TextField fx:id="txt_StartValue" promptText="X-Start" />
+                    <TextField fx:id="txt_EndValue" promptText="X-End" />
+                </HBox>
+                <TextField fx:id="txt_Accuracy" promptText="Kommastellen" />
+                <TextField fx:id="txt_MaxEntries" promptText="Anzahl Einträge" />
+            </VBox>
+        </HBox>
+    </center>
+    <bottom>
+        <HBox>
+            <Button text="Calculate" onAction="#btn_Calculate_Click"/>
+        </HBox>
+    </bottom>
+</BorderPane>
