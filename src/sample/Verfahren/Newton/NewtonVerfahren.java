@@ -41,6 +41,7 @@ public class NewtonVerfahren extends Verfahren {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return points.toArray(new Point[0]);
     }
 

@@ -1,4 +1,4 @@
-package sample.Tests;
+package sample.Verfahren.Sekanten;
 
 import org.junit.jupiter.api.Test;
 import sample.Utility.Point;
@@ -7,11 +7,11 @@ import sample.Verfahren.Verfahren;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NewtonVerfahrenTest {
+class SekantenverfahrenTest {
 
     @Test
     void calculate() {
-        Verfahren v = new NewtonVerfahren("x^2 - 2", 0, 3, 5, 10);
+        Verfahren v = new Sekantenverfahren("x^2 - 2", 0, 3, 5, 10);
         Point[] points = v.calculate();
         assertNotNull(points);
         assertNotEquals(0, points.length);
@@ -19,5 +19,6 @@ class NewtonVerfahrenTest {
         assertNotNull(p);
         assertEquals(p.y, 0);
         assertEquals(p.x, 1.41421);
+        System.out.println(p.x);
     }
 }
