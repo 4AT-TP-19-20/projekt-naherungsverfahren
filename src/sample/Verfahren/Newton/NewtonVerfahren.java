@@ -22,7 +22,7 @@ public class NewtonVerfahren extends Verfahren {
             String derive_function = Funktion.derive(getFunction());
 
             if(derive_function != null) {
-                Expression f = new ExpressionBuilder(getFunction()).variable("x").build();
+                Expression f = getExpression();
                 double xn = findClosestToZero();
                 points.add(new Point(xn, f.setVariable("x", xn).evaluate()));
 

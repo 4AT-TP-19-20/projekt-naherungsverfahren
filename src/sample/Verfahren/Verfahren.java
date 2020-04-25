@@ -1,8 +1,11 @@
 package sample.Verfahren;
 
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import sample.Utility.Point;
 
 public abstract class Verfahren {
+    private Expression expression;
     private String function;
     private int startValue, endValue, accuracy, max;
 
@@ -12,6 +15,7 @@ public abstract class Verfahren {
         this.endValue = end;
         this.accuracy = accuracy;
         this.max = max;
+        this.expression = new ExpressionBuilder(function).variable("x").build();
     }
 
     /**
@@ -36,6 +40,10 @@ public abstract class Verfahren {
 
     public int getAccuracy() {
         return accuracy;
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 
     // Pattern for DecimalFormat
