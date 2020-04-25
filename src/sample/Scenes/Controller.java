@@ -26,10 +26,8 @@ public class Controller {
         Verfahren v = new NewtonVerfahren(function, startValue, endValue, accuracy, maxEntries);
         Point[] points = v.calculate();
 
-        DecimalFormat df = new DecimalFormat(v.getPattern());
-
         for(Point p : points) {
-            System.out.println("(" + df.format(p.x) + "/" +df.format(p.y) + ")");
+            System.out.println("(" + p.x + "/" + p.y + ")");
         }
     }
 }

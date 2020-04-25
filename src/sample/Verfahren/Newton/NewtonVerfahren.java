@@ -24,17 +24,16 @@ public class NewtonVerfahren extends Verfahren {
             if(derive_function != null) {
                 Expression f = getExpression();
                 double xn = findClosestToZero();
-                points.add(new Point(xn, f.setVariable("x", xn).evaluate()));
+                points.add(new Point(roundDouble(xn), roundDouble(f.setVariable("x", xn).evaluate())));
 
                 for(int i = 0; i < getMax(); i++) {
                     double f_value = f.setVariable("x", xn).evaluate();
                     double fd_value = new ExpressionBuilder(derive_function).variable("x").build().setVariable("x", xn).evaluate();
 
                     xn = xn - (f_value / fd_value);
-                    points.add(new Point(xn, f.setVariable("x", xn).evaluate()));
+                    points.add(new Point(roundDouble(xn), roundDouble(f.setVariable("x", xn).evaluate())));
 
-                    int var = (int)(f.setVariable("x", xn).evaluate() * Math.pow(10, getAccuracy() + 1));
-                    if(var / Math.pow(10, getAccuracy() + 1) == 0.0) {
+                    if(roundDouble(f.setVariable("x", xn).evaluate()) == 0.0) {
                         break;
                     }
                 }

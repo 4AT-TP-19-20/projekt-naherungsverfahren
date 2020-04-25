@@ -46,17 +46,11 @@ public abstract class Verfahren {
         return expression;
     }
 
-    // Pattern for DecimalFormat
-    public String getPattern() {
-        StringBuilder sb = new StringBuilder("#.");
-        for(int i = 0; i < getAccuracy(); i++) {
-            sb.append("#");
-        }
-
-        return sb.toString();
-    }
-
     public int getMax() {
         return max;
+    }
+
+    protected Double roundDouble(double x) {
+        return ((int)(x * Math.pow(10, accuracy))) / Math.pow(10, accuracy);
     }
 }
