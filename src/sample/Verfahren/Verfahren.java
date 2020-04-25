@@ -4,6 +4,8 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import sample.Utility.Point;
 
+import java.util.ArrayList;
+
 public abstract class Verfahren {
     private Expression expression;
     private String function;
@@ -50,7 +52,36 @@ public abstract class Verfahren {
         return max;
     }
 
-    protected Double roundDouble(double x) {
-        return ((int)(x * Math.pow(10, accuracy))) / Math.pow(10, accuracy);
+    protected Double roundDouble(double val) {
+        return ((int)(val * Math.pow(10, accuracy))) / Math.pow(10, accuracy);
+    }
+
+    /**
+     * Returns the X value whose Y value is closest to zero
+     *
+     * @return Double - X Value
+     */
+    protected Double findClosestToZero() {
+        double step = (Math.max(getStartValue(), getEndValue()) - Math.min(getStartValue(), getEndValue())) / 6.0;
+        Double d = null;
+
+        for(double x = getStartValue(); x <= getEndValue(); x+=step) {
+            if(d != null) {
+                double val = new ExpressionBuilder(getFunction()).variable("x").build().setVariable("x", x).evaluate();
+                double current = new ExpressionBuilder(getFunction()).variable("x").build().setVariable("x", d).evaluate();
+                if(Math.abs(current) > Math.abs(val)) {
+                    d = x;
+                }
+            } else {
+                d = x;
+            }
+        }
+
+        return d;
+    }
+
+    protected void addPoint(double x, ArrayList<Point> points) {
+        double y = getExpression().setVariable("x", x).evaluate();
+        points.add(new Point(roundDouble(x), roundDouble(y)));
     }
 }
