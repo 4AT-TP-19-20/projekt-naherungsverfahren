@@ -2,6 +2,11 @@ package sample.Scenes;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
+import sample.Utility.Point;
+import sample.Verfahren.Newton.NewtonVerfahren;
+import sample.Verfahren.Verfahren;
+
+import java.text.DecimalFormat;
 
 public class Controller {
     public TextField txt_Function;
@@ -10,13 +15,21 @@ public class Controller {
     public TextField txt_StartValue;
     public TextField txt_MaxEntries;
 
-    public void btn_Calculate_Click(ActionEvent actionEvent) {
+    public void btn_Calculate_Click() {
         String function = txt_Function.getText();
         int accuracy = Integer.parseInt(txt_Accuracy.getText());
         int endValue = Integer.parseInt(txt_EndValue.getText());
         int startValue = Integer.parseInt(txt_StartValue.getText());
         int maxEntries = Integer.parseInt(txt_MaxEntries.getText());
 
-        // ToDo Implement Functions
+        // Replace NewtonVerfahren to test your Verfahren
+        Verfahren v = new NewtonVerfahren(function, startValue, endValue, accuracy, maxEntries);
+        Point[] points = v.calculate();
+
+        DecimalFormat df = new DecimalFormat(v.getPattern());
+
+        for(Point p : points) {
+            System.out.println("(" + df.format(p.x) + "/" +df.format(p.y) + ")");
+        }
     }
 }
