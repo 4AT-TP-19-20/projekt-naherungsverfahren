@@ -1,8 +1,7 @@
-package sample.Verfahren.Sekanten;
-
 import org.junit.jupiter.api.Test;
 import sample.Utility.Point;
 import sample.Verfahren.Newton.NewtonVerfahren;
+import sample.Verfahren.Sekanten.Sekantenverfahren;
 import sample.Verfahren.Verfahren;
 
 import static org.junit.jupiter.api.Assertions.*;
