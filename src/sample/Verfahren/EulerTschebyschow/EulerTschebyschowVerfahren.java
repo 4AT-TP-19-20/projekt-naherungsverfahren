@@ -64,6 +64,6 @@ public class EulerTschebyschowVerfahren extends Verfahren {
 
     @Override
     public String toString() {
-        return "Euler Tschebyschow Verfahren";
+        return "Das Euler-Tschebyschow-Verfahren bezeichnet in der Numerischen Mathematik ein iteratives Verfahren zum Lösen nichtlinearer Gleichungen. Es ist vergleichbar mit dem Newton-Verfahren, hat jedoch die Konvergenzordnung 3. Offenbar benötigt man im Gegensatz zum Newton-Verfahren die 2. Ableitung der Funktion. Die Erhöhung der Konvergenzordnung lohnt sich also nur, wenn die Berechnung der 2. Ableitung im Vergleich mit der Berechnung von Funktionswert und erster Ableitung leicht ist.";
     }
 }
