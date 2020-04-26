@@ -15,6 +15,10 @@ public class EulerTschebyschowVerfahren extends Verfahren {
         super(function, start, end, accuracy, max);
     }
 
+    public EulerTschebyschowVerfahren() {
+        super();
+    }
+
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
@@ -51,5 +55,15 @@ public class EulerTschebyschowVerfahren extends Verfahren {
         }
 
         return points.toArray(new Point[0]);
+    }
+
+    @Override
+    public String getInformation() {
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Euler Tschebyschow Verfahren";
     }
 }

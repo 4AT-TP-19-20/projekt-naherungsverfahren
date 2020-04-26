@@ -11,6 +11,10 @@ public class Bisektionsverfahren extends Verfahren {
         super(function, start, end, accuracy, max);
     }
 
+    public Bisektionsverfahren() {
+        super();
+    }
+
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
@@ -41,7 +45,17 @@ public class Bisektionsverfahren extends Verfahren {
         return points.toArray(new Point[0]);
     }
 
+    @Override
+    public String getInformation() {
+        return null;
+    }
+
     private double intervallHalbierung(double x, double y){
         return (x + y) / 2;
+    }
+
+    @Override
+    public String toString() {
+        return "Bisektion Verfahren";
     }
 }

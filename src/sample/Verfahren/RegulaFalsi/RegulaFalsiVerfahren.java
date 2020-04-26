@@ -11,6 +11,10 @@ public class RegulaFalsiVerfahren extends Verfahren {
         super(function, start, end, accuracy, max);
     }
 
+    public RegulaFalsiVerfahren() {
+        super();
+    }
+
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
@@ -34,7 +38,7 @@ public class RegulaFalsiVerfahren extends Verfahren {
 
             addPoint(xn, points);
 
-            if (roundDouble(ybn) == 0.0) {
+            if (roundDouble(yxn) == 0.0) {
                 break;
             }
         }
@@ -42,7 +46,17 @@ public class RegulaFalsiVerfahren extends Verfahren {
         return points.toArray(new Point[0]);
     }
 
+    @Override
+    public String getInformation() {
+        return "Bla bla wehehehe";
+    }
+
     private double regula(double an, double yan, double bn, double ybn) {
         return (an * ybn - bn * yan) / (ybn - yan);
+    }
+
+    @Override
+    public String toString() {
+        return "Regula Falsi Verfahren";
     }
 }

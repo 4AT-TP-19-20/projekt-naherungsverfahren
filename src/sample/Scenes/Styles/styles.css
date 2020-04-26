@@ -1,3 +1,7 @@
 .text-field, .label {
     -fx-pref-height: 30px;
 }
+
+.missing-argument {
+    -fx-background-color: #ff0000;
+}

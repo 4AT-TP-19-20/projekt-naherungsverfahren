@@ -18,26 +18,38 @@
                         <Label text="Maximale Anzahl von Einträgen"/>
                     </VBox>
                     <VBox spacing="10">
-                        <Label text="Verfahren 1:"/>
-                        <Label text="Verfahren 2:"/>
-                        <Label text="Verfahren 3:"/>
+                        <Label text="Verfahren 1:" fx:id="lbl_lbl_Verfahren1"/>
+                        <Label text="Verfahren 2:" fx:id="lbl_lbl_Verfahren2"/>
+                        <Label text="Verfahren 3:" fx:id="lbl_lbl_Verfahren3"/>
                     </VBox>
                 </VBox>
                 <VBox spacing="50">
                     <VBox spacing="10">
-                        <TextField fx:id="txt_Function" promptText="Funktion"/>
+                        <TextField fx:id="txt_Function" promptText="Funktion" onKeyPressed="#txt_Text_Changed"/>
                         <HBox>
-                            <TextField fx:id="txt_StartValue" promptText="X-Start"/>
-                            <TextField fx:id="txt_EndValue" promptText="X-End"/>
+                            <TextField fx:id="txt_StartValue" promptText="X-Start" onKeyPressed="#txt_Text_Changed"/>
+                            <TextField fx:id="txt_EndValue" promptText="X-End" onKeyPressed="#txt_Text_Changed"/>
                         </HBox>
-                        <TextField fx:id="txt_Accuracy" promptText="Kommastellen"/>
-                        <TextField fx:id="txt_MaxEntries" promptText="Anzahl Einträge"/>
+                        <TextField fx:id="txt_Accuracy" promptText="Kommastellen" onKeyPressed="#txt_Text_Changed"/>
+                        <TextField fx:id="txt_MaxEntries" promptText="Anzahl Einträge" onKeyPressed="#txt_Text_Changed"/>
                     </VBox>
-                    <VBox spacing="10">
-                        <Label fx:id="lbl_Verfahren1"/>
-                        <Label fx:id="lbl_Verfahren2"/>
-                        <Label fx:id="lbl_Verfahren3"/>
-                    </VBox>
+                    <HBox spacing="20">
+                        <VBox spacing="10">
+                            <Label fx:id="lbl_Verfahren1"/>
+                            <Label fx:id="lbl_Verfahren2"/>
+                            <Label fx:id="lbl_Verfahren3"/>
+                        </VBox>
+                        <VBox spacing="10">
+                            <Button text="Kopieren" fx:id="btn_Copy1" visible="false"/>
+                            <Button text="Kopieren" fx:id="btn_Copy2" visible="false"/>
+                            <Button text="Kopieren" fx:id="btn_Copy3" visible="false"/>
+                        </VBox>
+                        <VBox spacing="10">
+                            <Button text="Info" fx:id="btn_Info1" visible="false"/>
+                            <Button text="Info" fx:id="btn_Info2" visible="false"/>
+                            <Button text="Info" fx:id="btn_Info3" visible="false"/>
+                        </VBox>
+                    </HBox>
                 </VBox>
             </HBox>
             <VBox>
@@ -59,9 +71,9 @@
     <center>
         <VBox>
             <HBox spacing="20">
-                <ComboBox fx:id="cb_Verfahren1" onAction="#cmb_selection_Method"/>
-                <ComboBox fx:id="cb_Verfahren2" onAction="#cmb_selection_Method"/>
-                <ComboBox fx:id="cb_Verfahren3" onAction="#cmb_selection_Method"/>
+                <ComboBox fx:id="cb_Verfahren1"/>
+                <ComboBox fx:id="cb_Verfahren2"/>
+                <ComboBox fx:id="cb_Verfahren3"/>
             </HBox>
             <HBox spacing="20">
                 <ScrollPane>

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public abstract class Verfahren {
 
-    private final Expression expression;
-    private final String function;
-    private final int startValue;
-    private final int endValue;
-    private final int accuracy;
-    private final int maxValue;
+    private Expression expression;
+    private String function;
+    private int startValue;
+    private int endValue;
+    private int accuracy;
+    private int maxValue;
 
     public Verfahren(String function, int start, int end, int accuracy, int maxValue) {
         this.function = function;
@@ -21,9 +21,12 @@ public abstract class Verfahren {
         this.endValue = end;
         this.accuracy = accuracy;
         this.maxValue = maxValue;
-        this.expression = new ExpressionBuilder(function).variable("x").build();
+        this.expression = function == null ? null : new ExpressionBuilder(function).variable("x").build();
     }
 
+    public Verfahren() {
+        this(null , 0, 0, 0, 0);
+    }
     /**
      * Calculates Points until it reaches zero
      *
@@ -31,15 +34,11 @@ public abstract class Verfahren {
      */
     public abstract Point[] calculate();
 
-    /**
-     * Returns the corresponding Y Value
-     *
-     * @param x The X Value whose Y Value should be returned
-     * @return double
-     */
-    protected double f(double x) {
-        return expression.setVariable("x", x).evaluate();
-    }
+    public abstract String getInformation();
+
+    public abstract String toString();
+
+
 
     protected int getStartValue() {
         return startValue;
@@ -55,6 +54,41 @@ public abstract class Verfahren {
 
     protected String getFunction() {
         return function;
+    }
+
+    public int getAccuracy() {
+        return accuracy;
+    }
+
+    /**
+     * Returns the corresponding Y Value
+     *
+     * @param x The X Value whose Y Value should be returned
+     * @return double
+     */
+    public double f(double x) {
+        return expression.setVariable("x", x).evaluate();
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+        this.expression = function == null ? null : new ExpressionBuilder(function).variable("x").build();
+    }
+
+    public void setStartValue(int startValue) {
+        this.startValue = startValue;
+    }
+
+    public void setEndValue(int endValue) {
+        this.endValue = endValue;
+    }
+
+    public void setAccuracy(int accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public void setMax(int maxValue) {
+        this.maxValue = maxValue;
     }
 
     /**

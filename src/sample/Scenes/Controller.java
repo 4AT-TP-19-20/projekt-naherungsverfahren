@@ -1,20 +1,20 @@
 package sample.Scenes;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
+import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
 import sample.Utility.Point;
 import sample.Verfahren.Bisektion.Bisektionsverfahren;
+import sample.Verfahren.EulerTschebyschow.EulerTschebyschowVerfahren;
+import sample.Verfahren.Newton.NewtonVerfahren;
+import sample.Verfahren.RegulaFalsi.RegulaFalsiVerfahren;
 import sample.Verfahren.Sekanten.Sekantenverfahren;
+import sample.Verfahren.Steffensen.SteffensenVerfahren;
 import sample.Verfahren.Verfahren;
 
 import java.util.ArrayList;
@@ -28,9 +28,13 @@ public class Controller {
 
     public LineChart<Double, Double> lineChart;
 
-    public ComboBox<String> cb_Verfahren1;
-    public ComboBox<String> cb_Verfahren2;
-    public ComboBox<String> cb_Verfahren3;
+    public ComboBox<Verfahren> cb_Verfahren1;
+    public ComboBox<Verfahren> cb_Verfahren2;
+    public ComboBox<Verfahren> cb_Verfahren3;
+
+    public Label lbl_lbl_Verfahren1;
+    public Label lbl_lbl_Verfahren2;
+    public Label lbl_lbl_Verfahren3;
 
     public Label lbl_Verfahren1;
     public Label lbl_Verfahren2;
@@ -40,82 +44,153 @@ public class Controller {
     public ListView<String> lv_container2;
     public ListView<String> lv_container3;
 
-    public String[] cb_initalize = {"Bisektion", "Regula-Falsi", "Newton-Verfahren", "Steffensen", "Euler-Tschebyschow", "Sekanten"};
-    public String[] temp = new String[3];
+    public Button btn_Copy1;
+    public Button btn_Copy2;
+    public Button btn_Copy3;
+
+    public Button btn_Info1;
+    public Button btn_Info2;
+    public Button btn_Info3;
+
+    private ArrayList<TextField> textFields = new ArrayList<>();
+    private ArrayList<ComboBox<Verfahren>> comboBoxes = new ArrayList<>();
+    private ArrayList<ListView<String>> listViews = new ArrayList<>();
+    private ArrayList<Label> labels = new ArrayList<>();
+    private ArrayList<Label> lbls = new ArrayList<>();
+    private ArrayList<Button> copyButtons = new ArrayList<>();
+    private ArrayList<Button> infoButtons = new ArrayList<>();
 
     @FXML
     public void initialize() {
-        cb_Verfahren1.setValue(cb_initalize[0]);
-        cb_Verfahren2.setValue(cb_initalize[1]);
-        cb_Verfahren3.setValue(cb_initalize[2]);
+        comboBoxes.add(cb_Verfahren1);
+        comboBoxes.add(cb_Verfahren2);
+        comboBoxes.add(cb_Verfahren3);
 
-        temp[0] = cb_Verfahren1.getValue();
-        temp[1] = cb_Verfahren2.getValue();
-        temp[2] = cb_Verfahren3.getValue();
+        labels.add(lbl_lbl_Verfahren1);
+        labels.add(lbl_lbl_Verfahren2);
+        labels.add(lbl_lbl_Verfahren3);
 
-        for (int i = 0; i < 6; i++) {
-            cb_Verfahren1.getItems().add(cb_initalize[i]);
-            cb_Verfahren2.getItems().add(cb_initalize[i]);
-            cb_Verfahren3.getItems().add(cb_initalize[i]);
-        }
-    }
+        lbls.add(lbl_Verfahren1);
+        lbls.add(lbl_Verfahren2);
+        lbls.add(lbl_Verfahren3);
 
-    public void btn_Calculate_Click() {
-        String function = txt_Function.getText();
-        int accuracy = 0, endValue = 0, startValue = 0, maxEntries = 0;
-        ArrayList<TextField> textFields = new ArrayList<>();
         textFields.add(txt_Accuracy);
         textFields.add(txt_StartValue);
         textFields.add(txt_EndValue);
         textFields.add(txt_MaxEntries);
         textFields.add(txt_Function);
-        boolean notEmpty = false;
-        int temp = 0;
-        for (int i = 0; i < 5; i++) {
-            if (textFields.get(i).getText().isEmpty()) {
-                textFields.get(i).setBackground(new Background(new BackgroundFill(Color.INDIANRED, CornerRadii.EMPTY, Insets.EMPTY)));
-            } else {
-                textFields.get(i).setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                temp++;
-                if (temp == 5) {
-                    notEmpty = true;
-                }
-            }
-        }
-        if (notEmpty) {
-            accuracy = Integer.parseInt(txt_Accuracy.getText());
-            endValue = Integer.parseInt(txt_EndValue.getText());
-            startValue = Integer.parseInt(txt_StartValue.getText());
-            maxEntries = Integer.parseInt(txt_MaxEntries.getText());
-            Verfahren v = new Sekantenverfahren("x^2 - 2", 0, 3, 5, 20);
-            Point[] points = v.calculate();
 
-            for (Point p : points) {
-                System.out.println("(" + p.x + "/" + p.y + ")");
-            }
-        }
+        listViews.add(lv_container1);
+        listViews.add(lv_container2);
+        listViews.add(lv_container3);
 
+        copyButtons.add(btn_Copy1);
+        copyButtons.add(btn_Copy2);
+        copyButtons.add(btn_Copy3);
+
+        infoButtons.add(btn_Info1);
+        infoButtons.add(btn_Info2);
+        infoButtons.add(btn_Info3);
+
+
+        ObservableList<Verfahren> cb_initalize = FXCollections.observableArrayList(
+                new Bisektionsverfahren(),
+                new EulerTschebyschowVerfahren(),
+                new NewtonVerfahren(),
+                new RegulaFalsiVerfahren(),
+                new Sekantenverfahren(),
+                new SteffensenVerfahren());
+
+        for(int i = 0; i < comboBoxes.size(); i++) {
+            ComboBox<Verfahren> cb = comboBoxes.get(i);
+            Button btn_Info = infoButtons.get(i);
+            Button btn_Copy = copyButtons.get(i);
+            Label lbl = labels.get(i);
+            Label label = lbls.get(i);
+
+            cb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> lbl.setText(newValue.toString() + ":"));
+            cb.setItems(cb_initalize);
+            label.textProperty().addListener((observable, oldValue, newValue) -> {
+                btn_Info.setVisible(!newValue.isEmpty());
+                btn_Copy.setVisible(!newValue.isEmpty());
+            });
+
+            btn_Copy.setOnAction((e) -> {
+                ClipboardContent content = new ClipboardContent();
+                content.putString(label.getText());
+                Clipboard.getSystemClipboard().setContent(content);
+            });
+
+        }
     }
 
-    public void cmb_selection_Method(ActionEvent actionEvent) throws Exception {
-        boolean next;
-        //not good programmed
+    public void btn_Calculate_Click() {
+        boolean notEmpty = true;
 
-        if (cb_Verfahren2.getValue().equals(cb_Verfahren1.getValue())) {
-            cb_Verfahren1.setValue(temp[1]);
-        } else if (cb_Verfahren1.getValue().equals(cb_Verfahren2.getValue())) {
-            cb_Verfahren2.setValue(temp[0]);
-        } else if (cb_Verfahren2.getValue().equals(cb_Verfahren3.getValue())) {
-            cb_Verfahren3.setValue(temp[1]);
-        } else if (cb_Verfahren1.getValue().equals(cb_Verfahren3.getValue())) {
-            cb_Verfahren3.setValue(temp[0]);
-        } else if (cb_Verfahren3.getValue().equals(cb_Verfahren1.getValue())) {
-            cb_Verfahren1.setValue(temp[2]);
-        } else if (cb_Verfahren3.getValue().equals(cb_Verfahren2.getValue())) {
-            cb_Verfahren2.setValue(temp[2]);
+        for (int i = 0; i < 5; i++) {
+            if (textFields.get(i).getText().isEmpty()) {
+                textFields.get(i).getStyleClass().add("missing-argument");
+                notEmpty = false;
+            }
         }
-        temp[0] = cb_Verfahren1.getValue();
-        temp[1] = cb_Verfahren2.getValue();
-        temp[2] = cb_Verfahren3.getValue();
+
+        if (notEmpty) {
+            try {
+                String func = txt_Function.getText();
+                int accuracy = Integer.parseInt(txt_Accuracy.getText());
+                int endValue = Integer.parseInt(txt_EndValue.getText());
+                int startValue = Integer.parseInt(txt_StartValue.getText());
+                int maxEntries = Integer.parseInt(txt_MaxEntries.getText());
+
+                for(int i = 0; i < comboBoxes.size(); i++) {
+                    ComboBox<Verfahren> cb = comboBoxes.get(i);
+                    ListView<String> lv = listViews.get(i);
+                    Label lbl = lbls.get(i);
+
+                    Verfahren v = cb.getSelectionModel().getSelectedItem();
+                    if(v != null) {
+                        v.setStartValue(startValue);
+                        v.setMax(maxEntries);
+                        v.setEndValue(endValue);
+                        v.setAccuracy(accuracy);
+                        v.setFunction(func);
+
+                        if((v.f(startValue) > 0 && v.f(endValue) > 0) || (v.f(startValue) < 0 && v.f(endValue) < 0)) {
+                            System.out.println("Error! Gleiches Vorzeichen!");
+                            return;
+                        }
+
+                        Point[] points;
+                        try {
+                            points = v.calculate();
+                        } catch (ArithmeticException e) {
+                            System.out.println("Fehler! Division durch Null!");
+                            break;
+                        }
+
+                        lv.getItems().clear();
+                        for (int j = 0; j < points.length; j++) {
+                            Point p = points[j];
+
+                            String x = String.format("%." + v.getAccuracy() + "f", p.x);
+                            String y = String.format("%." + v.getAccuracy() + "f", p.y);
+
+                            lv.getItems().add((j + 1) + ". (" + x + "|" + y + ")");
+                        }
+
+                        lbl.setText(points[points.length - 1].x + "");
+                    }
+                }
+            } catch(NumberFormatException e) {
+                System.out.println("Fehler! Keine Zahl");
+            }
+        }
+    }
+
+    public void txt_Text_Changed(KeyEvent actionEvent) {
+        if(actionEvent.getTarget() instanceof TextField) {
+            TextField txt = (TextField) actionEvent.getTarget();
+            txt.getStyleClass().remove("missing-argument");
+        }
     }
 }

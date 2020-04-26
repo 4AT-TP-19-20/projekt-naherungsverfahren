@@ -11,6 +11,10 @@ public class SteffensenVerfahren extends Verfahren {
         super(function, start, end, accuracy, max);
     }
 
+    public SteffensenVerfahren() {
+        super();
+    }
+
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
@@ -21,9 +25,23 @@ public class SteffensenVerfahren extends Verfahren {
         for(int i = 0; i < getMax(); i++) {
             xn = xn - f(xn) / g(xn);
             addPoint(xn, points);
+
+            if(roundDouble(f(xn)) == 0.0) {
+                break;
+            }
         }
 
         return points.toArray(new Point[0]);
+    }
+
+    @Override
+    public String getInformation() {
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Steffensen Verfahren";
     }
 
     private double g(double x) {
