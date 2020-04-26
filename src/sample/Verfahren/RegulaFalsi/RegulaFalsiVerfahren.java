@@ -1,6 +1,5 @@
 package sample.Verfahren.RegulaFalsi;
 
-import net.objecthunter.exp4j.Expression;
 import sample.Utility.Point;
 import sample.Verfahren.Verfahren;
 
@@ -15,24 +14,31 @@ public class RegulaFalsiVerfahren extends Verfahren {
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
-        Expression f = getExpression();
-        double an = getStartValue(), bn = getEndValue(), yan = f.setVariable("x", an).evaluate(), ybn = f.setVariable("x", bn).evaluate();
-        double xn, yxn;
+
+        double an = getStartValue();
+        double bn = getEndValue();
+        double yan = f(an);
+        double ybn = f(bn);
+
         for (int i = 0; i < getMax(); i++) {
-            xn = regula(an, yan, bn, ybn);
-            yxn = f.setVariable("x", xn).evaluate();
-            if (yan < 0 && yxn > 0 || yan > 0 && yxn < 0) {
+            double xn = regula(an, yan, bn, ybn);
+            double yxn = f(xn);
+
+            if ((yan < 0 && yxn > 0) || (yan > 0 && yxn < 0)) {
                 ybn = yxn;
                 bn = xn;
-            } else if (ybn < 0 && yxn > 0 || ybn > 0 && yxn < 0) {
+            } else if ((ybn < 0 && yxn > 0) || (ybn > 0 && yxn < 0)) {
                 yan = yxn;
                 an = xn;
             }
+
+            addPoint(xn, points);
+
             if (roundDouble(ybn) == 0.0) {
                 break;
             }
-            points.add(new Point(roundDouble(xn), roundDouble(yxn)));
         }
+
         return points.toArray(new Point[0]);
     }
 

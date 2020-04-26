@@ -1,6 +1,5 @@
 package sample.Verfahren.Newton;
 
-import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import sample.Utility.Funktion;
 import sample.Utility.Point;
@@ -22,20 +21,17 @@ public class NewtonVerfahren extends Verfahren {
             String derive_function = Funktion.derive(getFunction());
 
             if(derive_function != null) {
-                Expression f = getExpression();
                 double xn = findClosestToZero();
-                // points.add(new Point(roundDouble(xn), roundDouble(f.setVariable("x", xn).evaluate())));
                 addPoint(xn, points);
 
                 for(int i = 0; i < getMax(); i++) {
-                    double f_value = f.setVariable("x", xn).evaluate();
+                    double f_value = f(xn);
                     double fd_value = new ExpressionBuilder(derive_function).variable("x").build().setVariable("x", xn).evaluate();
 
                     xn = xn - (f_value / fd_value);
-                    // points.add(new Point(roundDouble(xn), roundDouble(f.setVariable("x", xn).evaluate())));
                     addPoint(xn, points);
 
-                    if(roundDouble(f.setVariable("x", xn).evaluate()) == 0.0) {
+                    if(roundDouble(f(xn)) == 0.0) {
                         break;
                     }
                 }

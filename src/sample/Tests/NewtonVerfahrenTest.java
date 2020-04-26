@@ -1,5 +1,3 @@
-package sample.Tests;
-
 import org.junit.jupiter.api.Test;
 import sample.Utility.Point;
 import sample.Verfahren.Newton.NewtonVerfahren;

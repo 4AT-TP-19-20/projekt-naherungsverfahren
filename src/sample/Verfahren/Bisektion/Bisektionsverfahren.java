@@ -1,6 +1,5 @@
 package sample.Verfahren.Bisektion;
 
-import net.objecthunter.exp4j.Expression;
 import sample.Utility.Point;
 import sample.Verfahren.Verfahren;
 
@@ -15,11 +14,16 @@ public class Bisektionsverfahren extends Verfahren {
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
-        Expression f = getExpression();
-        double an = getStartValue(), xn, bn = getEndValue(), yan = f.setVariable("x", an).evaluate(), ybn = f.setVariable("x", bn).evaluate(), yxn;
+
+        double an = getStartValue();
+        double bn = getEndValue();
+        double yan = f(an);
+        double ybn = f(bn);
+
         for (int i = 0; i < getMax(); i++) {
-            xn = intervallHalbierung(an, bn);
-            yxn = f.setVariable("x", xn).evaluate();
+            double xn = intervallHalbierung(an, bn);
+            double yxn = f(xn);
+
             if(yan < 0 && yxn > 0 || yan > 0 && yan < 0){
                 bn = xn;
                 ybn = yxn;
@@ -28,7 +32,11 @@ public class Bisektionsverfahren extends Verfahren {
                 an = xn;
                 yan = yxn;
             }
-            points.add(new Point(roundDouble(xn), roundDouble(yxn)));
+            addPoint(xn, points);
+
+            if(roundDouble(yxn) == 0.0) {
+                break;
+            }
         }
         return points.toArray(new Point[0]);
     }

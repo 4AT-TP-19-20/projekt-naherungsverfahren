@@ -1,17 +1,15 @@
-package sample.Verfahren.Bisektion;
-
 import org.junit.jupiter.api.Test;
 import sample.Utility.Point;
-import sample.Verfahren.Sekanten.Sekantenverfahren;
+import sample.Verfahren.Steffensen.SteffensenVerfahren;
 import sample.Verfahren.Verfahren;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BisektionsverfahrenTest {
+class SteffensenVerfahrenTest {
 
     @Test
     void calculate() {
-        Verfahren v = new Bisektionsverfahren("x^2 - 2", 0, 3, 5, 40);
+        Verfahren v = new SteffensenVerfahren("x^2 - 2", 1, 3, 5, 10);
         Point[] points = v.calculate();
         assertNotNull(points);
         assertNotEquals(0, points.length);
@@ -19,6 +17,5 @@ class BisektionsverfahrenTest {
         assertNotNull(p);
         assertEquals(p.y, 0);
         assertEquals(p.x, 1.41421);
-        System.out.println(p.x);
     }
 }

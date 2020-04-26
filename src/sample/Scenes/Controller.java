@@ -1,12 +1,9 @@
 package sample.Scenes;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import sample.Utility.Point;
-import sample.Verfahren.Newton.NewtonVerfahren;
+import sample.Verfahren.Bisektion.Bisektionsverfahren;
 import sample.Verfahren.Verfahren;
-
-import java.text.DecimalFormat;
 
 public class Controller {
     public TextField txt_Function;
@@ -22,8 +19,7 @@ public class Controller {
         int startValue = Integer.parseInt(txt_StartValue.getText());
         int maxEntries = Integer.parseInt(txt_MaxEntries.getText());
 
-        // Replace NewtonVerfahren to test your Verfahren
-        Verfahren v = new NewtonVerfahren(function, startValue, endValue, accuracy, maxEntries);
+        Verfahren v = new Bisektionsverfahren(function, startValue, endValue, accuracy, maxEntries);
         Point[] points = v.calculate();
 
         for(Point p : points) {

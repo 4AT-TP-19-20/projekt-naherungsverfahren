@@ -24,7 +24,6 @@ public class EulerTschebyschowVerfahren extends Verfahren {
             String s_f2 = Funktion.derive(s_f1);
 
             if(s_f1 != null && s_f2 != null) {
-                Expression f = getExpression();
                 Expression f1 = new ExpressionBuilder(s_f1).variable("x").build();
                 Expression f2 = new ExpressionBuilder(s_f2).variable("x").build();
 
@@ -32,7 +31,7 @@ public class EulerTschebyschowVerfahren extends Verfahren {
                 addPoint(x, points);
 
                 for(int i = 0; i < getMax(); i++) {
-                    double x_f = f.setVariable("x", x).evaluate();
+                    double x_f = f(x);
                     double x_f1 = f1.setVariable("x", x).evaluate();
                     double x_f2 = f2.setVariable("x", x).evaluate();
 
@@ -42,7 +41,7 @@ public class EulerTschebyschowVerfahren extends Verfahren {
                     x = x + s + t;
                     addPoint(x, points);
 
-                    if(roundDouble(f.setVariable("x", x).evaluate()) == 0.0) {
+                    if(roundDouble(f(x)) == 0.0) {
                         break;
                     }
                 }

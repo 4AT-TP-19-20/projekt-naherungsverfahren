@@ -7,16 +7,20 @@ import sample.Utility.Point;
 import java.util.ArrayList;
 
 public abstract class Verfahren {
-    private Expression expression;
-    private String function;
-    private int startValue, endValue, accuracy, max;
 
-    public Verfahren(String function, int start, int end, int accuracy, int max) {
+    private final Expression expression;
+    private final String function;
+    private final int startValue;
+    private final int endValue;
+    private final int accuracy;
+    private final int maxValue;
+
+    public Verfahren(String function, int start, int end, int accuracy, int maxValue) {
         this.function = function;
         this.startValue = start;
         this.endValue = end;
         this.accuracy = accuracy;
-        this.max = max;
+        this.maxValue = maxValue;
         this.expression = new ExpressionBuilder(function).variable("x").build();
     }
 
@@ -27,31 +31,38 @@ public abstract class Verfahren {
      */
     public abstract Point[] calculate();
 
-    // Methods for Subclasses
-    public String getFunction() {
-        return function;
+    /**
+     * Returns the corresponding Y Value
+     *
+     * @param x The X Value whose Y Value should be returned
+     * @return double
+     */
+    protected double f(double x) {
+        return expression.setVariable("x", x).evaluate();
     }
 
-    public int getStartValue() {
+    protected int getStartValue() {
         return startValue;
     }
 
-    public int getEndValue() {
+    protected int getEndValue() {
         return endValue;
     }
 
-    public int getAccuracy() {
-        return accuracy;
+    protected int getMax() {
+        return maxValue;
     }
 
-    public Expression getExpression() {
-        return expression;
+    protected String getFunction() {
+        return function;
     }
 
-    public int getMax() {
-        return max;
-    }
-
+    /**
+     * Returns the val Value with accuracy times decimal places
+     *
+     * @param val The double which should be rounded
+     * @return Double
+     */
     protected Double roundDouble(double val) {
         return ((int)(val * Math.pow(10, accuracy))) / Math.pow(10, accuracy);
     }
@@ -62,13 +73,13 @@ public abstract class Verfahren {
      * @return Double - X Value
      */
     protected Double findClosestToZero() {
-        double step = (Math.max(getStartValue(), getEndValue()) - Math.min(getStartValue(), getEndValue())) / 6.0;
+        double step = (Math.max(startValue, endValue) - Math.min(startValue, endValue)) / 6.0;
         Double d = null;
 
-        for(double x = getStartValue(); x <= getEndValue(); x+=step) {
+        for(double x = startValue; x <= endValue; x+=step) {
             if(d != null) {
-                double val = new ExpressionBuilder(getFunction()).variable("x").build().setVariable("x", x).evaluate();
-                double current = new ExpressionBuilder(getFunction()).variable("x").build().setVariable("x", d).evaluate();
+                double val = new ExpressionBuilder(function).variable("x").build().setVariable("x", x).evaluate();
+                double current = new ExpressionBuilder(function).variable("x").build().setVariable("x", d).evaluate();
                 if(Math.abs(current) > Math.abs(val)) {
                     d = x;
                 }
@@ -80,8 +91,15 @@ public abstract class Verfahren {
         return d;
     }
 
+    /**
+     * Adds a new Point to the Array. It creates an Object Point with the Values X and Y.
+     * Values have "accuracy" times decimal places.
+     *
+     * @param x - The X Value to Add
+     * @param points - The Array
+     */
     protected void addPoint(double x, ArrayList<Point> points) {
-        double y = getExpression().setVariable("x", x).evaluate();
+        double y = expression.setVariable("x", x).evaluate();
         points.add(new Point(roundDouble(x), roundDouble(y)));
     }
 }
