@@ -4,32 +4,34 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane minHeight="900" minWidth="1200" stylesheets="@Styles/styles.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Scenes.Controller">
+<BorderPane minHeight="900" minWidth="1200" stylesheets="@Styles/styles.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.Scenes.Controller">
     <top>
         <HBox spacing="200">
             <HBox spacing="50">
                 <VBox spacing="50">
                     <VBox spacing="10">
-                        <Label text="Funktion" />
-                        <Label text="Intervall" />
-                        <Label text="Anzahl Kommastellen" />
-                        <Label text="Maximale Anzahl von Einträgen" />
+                        <Label text="Funktion"/>
+                        <Label text="Intervall"/>
+                        <Label text="Anzahl Kommastellen"/>
+                        <Label text="Maximale Anzahl von Einträgen"/>
                     </VBox>
                     <VBox spacing="10">
-                        <Label text="Verfahren 1:" />
-                        <Label text="Verfahren 2:" />
-                        <Label text="Verfahren 3:" />
+                        <Label text="Verfahren 1:"/>
+                        <Label text="Verfahren 2:"/>
+                        <Label text="Verfahren 3:"/>
                     </VBox>
                 </VBox>
                 <VBox spacing="50">
                     <VBox spacing="10">
-                        <TextField fx:id="txt_Function" promptText="Funktion" />
+                        <TextField fx:id="txt_Function" promptText="Funktion"/>
                         <HBox>
-                            <TextField fx:id="txt_StartValue" promptText="X-Start" />
-                            <TextField fx:id="txt_EndValue" promptText="X-End" />
+                            <TextField fx:id="txt_StartValue" promptText="X-Start"/>
+                            <TextField fx:id="txt_EndValue" promptText="X-End"/>
                         </HBox>
-                        <TextField fx:id="txt_Accuracy" promptText="Kommastellen" />
-                        <TextField fx:id="txt_MaxEntries" promptText="Anzahl Einträge" />
+                        <TextField fx:id="txt_Accuracy" promptText="Kommastellen"/>
+                        <TextField fx:id="txt_MaxEntries" promptText="Anzahl Einträge"/>
                     </VBox>
                     <VBox spacing="10">
                         <Label fx:id="lbl_Verfahren1"/>
@@ -57,9 +59,9 @@
     <center>
         <VBox>
             <HBox spacing="20">
-                <ComboBox fx:id="cb_Verfahren1"/>
-                <ComboBox fx:id="cb_Verfahren2"/>
-                <ComboBox fx:id="cb_Verfahren3"/>
+                <ComboBox fx:id="cb_Verfahren1" onAction="#cmb_selection_Method"/>
+                <ComboBox fx:id="cb_Verfahren2" onAction="#cmb_selection_Method"/>
+                <ComboBox fx:id="cb_Verfahren3" onAction="#cmb_selection_Method"/>
             </HBox>
             <HBox spacing="20">
                 <ScrollPane>
