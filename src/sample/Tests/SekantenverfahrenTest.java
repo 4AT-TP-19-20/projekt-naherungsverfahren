@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Test;
 import sample.Utility.Point;
-import sample.Verfahren.Newton.NewtonVerfahren;
 import sample.Verfahren.Sekanten.Sekantenverfahren;
 import sample.Verfahren.Verfahren;
 
@@ -18,6 +17,5 @@ class SekantenverfahrenTest {
         assertNotNull(p);
         assertEquals(p.y, 0);
         assertEquals(p.x, 1.41421);
-        System.out.println(p.x);
     }
 }

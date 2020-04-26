@@ -45,17 +45,12 @@ public class Bisektionsverfahren extends Verfahren {
         return points.toArray(new Point[0]);
     }
 
-    @Override
-    public String getInformation() {
-        return null;
-    }
-
     private double intervallHalbierung(double x, double y){
         return (x + y) / 2;
     }
 
     @Override
     public String toString() {
-        return "Beim Newton-Verfahren (auch Tangenten- bzw. Tangentennäherungsverfahren genannt) wird die Sekante von Regula Falsi durch die Tangente am Punkt x0 ersetzt. Die Nullstelle dieser Tangente wird dann als verbesserte Näherung der Nullstelle der Funktion verwendet. Dann wird wieder eine Tangente durch den Punkt gelegt und immer so weiter. Somit nähert man sich immer weiter der gesuchten Nullstelle.";
+        return "Bisektions Verfahren";
     }
 }

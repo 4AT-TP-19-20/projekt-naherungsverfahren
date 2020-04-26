@@ -35,13 +35,8 @@ public class SteffensenVerfahren extends Verfahren {
     }
 
     @Override
-    public String getInformation() {
-        return null;
-    }
-
-    @Override
     public String toString() {
-        return "";
+        return "Steffensen Verfahren";
     }
 
     private double g(double x) {

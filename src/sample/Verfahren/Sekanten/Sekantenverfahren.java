@@ -45,14 +45,8 @@ public class Sekantenverfahren extends Verfahren {
     }
 
     @Override
-    public String getInformation() {
-        return null;
-    }
-
-    @Override
     public String toString() {
-        return "Beim Sekantenverfahren handelt es sich im Prinzip um eine Vereinfachung des Newton-Verfahrens, weil man hier nicht die Ableitung der Funktion benötigt.\n" +
-                "Beim Verfahren wird durch zwei Punkte der Funktion eine Sekante gelegt. Der Schnittpunkt mit der x-Achse (, der sich nun näher an der Nullstelle befindet), wird nun als x-Koordinate des neuen Punktes auf der Funktion verwendet und es wird eine Sekante durch die beiden Punkte gelegt. Somit nähert man sich immer weiter der Nullstelle.\n";
+        return "Sekanten Verfahren";
     }
 
 }

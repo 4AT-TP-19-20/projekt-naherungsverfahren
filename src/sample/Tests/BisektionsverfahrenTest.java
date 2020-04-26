@@ -1,8 +1,6 @@
-package sample.Verfahren.Bisektion;
-
 import org.junit.jupiter.api.Test;
 import sample.Utility.Point;
-
+import sample.Verfahren.Bisektion.Bisektionsverfahren;
 import sample.Verfahren.Verfahren;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +17,5 @@ class BisektionsverfahrenTest {
         assertNotNull(p);
         assertEquals(p.y, 0);
         assertEquals(p.x, 1.41421);
-        System.out.println(p.x);
     }
 }

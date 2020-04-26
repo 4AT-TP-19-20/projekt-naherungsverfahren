@@ -46,18 +46,12 @@ public class RegulaFalsiVerfahren extends Verfahren {
         return points.toArray(new Point[0]);
     }
 
-    @Override
-    public String getInformation() {
-        return "Bla bla wehehehe";
-    }
-
     private double regula(double an, double yan, double bn, double ybn) {
         return (an * ybn - bn * yan) / (ybn - yan);
     }
 
     @Override
     public String toString() {
-        return "Regula Falsi ist im Prinzip eine Mischung aus dem Bisektions- und Sekantenverfahren. Es verbindet sozusagen die Vorteile der beiden zuvor genannten Verfahren.\n" +
-                "Das Verfahren startet mit zwei Stellen (nahe der Nullstelle), a0 und b0, deren Funktionswerte unterschiedliche Vorzeichen haben. Das bedeutet also, dass sich in diesem Intervall [a,b] eine Nullstelle befindet. Nun verkleinert man immer weiter das Intervall und nähert sich somit immer weiter der Nullstelle.\n";
+        return "Regula Falsi Verfahren";
     }
 }

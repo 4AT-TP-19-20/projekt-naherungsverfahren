@@ -4,10 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+import sample.Utility.Messages;
 import sample.Utility.Point;
 import sample.Verfahren.Bisektion.Bisektionsverfahren;
 import sample.Verfahren.EulerTschebyschow.EulerTschebyschowVerfahren;
@@ -48,17 +52,12 @@ public class Controller {
     public Button btn_Copy2;
     public Button btn_Copy3;
 
-    public Button btn_Info1;
-    public Button btn_Info2;
-    public Button btn_Info3;
-
-    private ArrayList<TextField> textFields = new ArrayList<>();
-    private ArrayList<ComboBox<Verfahren>> comboBoxes = new ArrayList<>();
-    private ArrayList<ListView<String>> listViews = new ArrayList<>();
-    private ArrayList<Label> labels = new ArrayList<>();
-    private ArrayList<Label> lbls = new ArrayList<>();
-    private ArrayList<Button> copyButtons = new ArrayList<>();
-    private ArrayList<Button> infoButtons = new ArrayList<>();
+    private final ArrayList<TextField> textFields = new ArrayList<>();
+    private final ArrayList<ComboBox<Verfahren>> comboBoxes = new ArrayList<>();
+    private final ArrayList<ListView<String>> listViews = new ArrayList<>();
+    private final ArrayList<Label> labels = new ArrayList<>();
+    private final ArrayList<Label> lbls = new ArrayList<>();
+    private final ArrayList<Button> copyButtons = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -88,10 +87,7 @@ public class Controller {
         copyButtons.add(btn_Copy2);
         copyButtons.add(btn_Copy3);
 
-        infoButtons.add(btn_Info1);
-        infoButtons.add(btn_Info2);
-        infoButtons.add(btn_Info3);
-
+        txt_Function.textProperty().addListener((c, o, newVal) -> initializeChart(newVal));
 
         ObservableList<Verfahren> cb_initalize = FXCollections.observableArrayList(
                 new Bisektionsverfahren(),
@@ -103,17 +99,13 @@ public class Controller {
 
         for(int i = 0; i < comboBoxes.size(); i++) {
             ComboBox<Verfahren> cb = comboBoxes.get(i);
-            Button btn_Info = infoButtons.get(i);
             Button btn_Copy = copyButtons.get(i);
             Label lbl = labels.get(i);
             Label label = lbls.get(i);
 
             cb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> lbl.setText(newValue.toString() + ":"));
             cb.setItems(cb_initalize);
-            label.textProperty().addListener((observable, oldValue, newValue) -> {
-                btn_Info.setVisible(!newValue.isEmpty());
-                btn_Copy.setVisible(!newValue.isEmpty());
-            });
+            label.textProperty().addListener((observable, oldValue, newValue) -> btn_Copy.setVisible(!newValue.isEmpty()));
 
             btn_Copy.setOnAction((e) -> {
                 ClipboardContent content = new ClipboardContent();
@@ -138,10 +130,27 @@ public class Controller {
             try {
                 String func = txt_Function.getText();
                 int accuracy = Integer.parseInt(txt_Accuracy.getText());
-                int endValue = Integer.parseInt(txt_EndValue.getText());
-                int startValue = Integer.parseInt(txt_StartValue.getText());
+                double endValue = Double.parseDouble(txt_EndValue.getText().replace(",", "."));
+                double startValue = Double.parseDouble(txt_StartValue.getText().replace(",", "."));
                 int maxEntries = Integer.parseInt(txt_MaxEntries.getText());
 
+                if(accuracy > 8) {
+                    Messages.showWarning("Warnung!", "Die Anzahl der Kommastellen darf nicht größer als 8 sein!");
+                    return;
+                } else if(accuracy < 2) {
+                    Messages.showWarning("Warnung!", "Die Anzahl der Kommastellen darf nicht kleiner als 2 sein!");
+                    return;
+                }
+
+                if(maxEntries > 300) {
+                    Messages.showWarning("Warnung!", "Die Anzahl der Einträge darf nicht größer als 300 sein!");
+                    return;
+                } else if(maxEntries < 10) {
+                    Messages.showWarning("Warnung!", "Die Anzahl der Einträge darf nicht kleiner als 10 sein!");
+                    return;
+                }
+
+                notEmpty = false;
                 for(int i = 0; i < comboBoxes.size(); i++) {
                     ComboBox<Verfahren> cb = comboBoxes.get(i);
                     ListView<String> lv = listViews.get(i);
@@ -149,6 +158,7 @@ public class Controller {
 
                     Verfahren v = cb.getSelectionModel().getSelectedItem();
                     if(v != null) {
+                        notEmpty = true;
                         v.setStartValue(startValue);
                         v.setMax(maxEntries);
                         v.setEndValue(endValue);
@@ -156,7 +166,7 @@ public class Controller {
                         v.setFunction(func);
 
                         if((v.f(startValue) > 0 && v.f(endValue) > 0) || (v.f(startValue) < 0 && v.f(endValue) < 0)) {
-                            System.out.println("Error! Gleiches Vorzeichen!");
+                            Messages.showWarning("Warnung", "f(Start-Wert) und f(End-Wert) müssen verschiedene Vorzeichen haben!");
                             return;
                         }
 
@@ -164,8 +174,8 @@ public class Controller {
                         try {
                             points = v.calculate();
                         } catch (ArithmeticException e) {
-                            System.out.println("Fehler! Division durch Null!");
-                            break;
+                            Messages.showError("Fehler!", "Es trat ein Rechenfehler auf!");
+                            continue;
                         }
 
                         lv.getItems().clear();
@@ -181,8 +191,12 @@ public class Controller {
                         lbl.setText(points[points.length - 1].x + "");
                     }
                 }
+
+                if(!notEmpty) {
+                    Messages.showWarning("Warnung!", "Es muss mindestens ein Verfahren ausgewählt werden!");
+                }
             } catch(NumberFormatException e) {
-                System.out.println("Fehler! Keine Zahl");
+                Messages.showError("Fehler!", "Es wurde bei einem Zahlenfeld, keine Zahl angegeben!");
             }
         }
     }
@@ -191,6 +205,33 @@ public class Controller {
         if(actionEvent.getTarget() instanceof TextField) {
             TextField txt = (TextField) actionEvent.getTarget();
             txt.getStyleClass().remove("missing-argument");
+        }
+    }
+
+    private void initializeChart(String func) {
+        try {
+            Expression f = new ExpressionBuilder(func).variable("x").build();
+            if(f != null) {
+                XYChart.Series<Double, Double> data = new XYChart.Series<>();
+
+                for(int i = -5000; i <= 5000; i+=5) {
+                    if(i == 0) {
+                        continue;
+                    }
+
+                    double x = (i / 100.0);
+                    double y = f.setVariable("x", x).evaluate();
+
+                    data.getData().add(new XYChart.Data<>(x, y));
+                }
+
+                lineChart.getData().clear();
+                lineChart.setCreateSymbols(false);
+                lineChart.setLegendVisible(false);
+                lineChart.getData().add(data);
+            }
+        } catch (Exception e) {
+            lineChart.getData().clear();
         }
     }
 }

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane minHeight="900" minWidth="1200" stylesheets="@Styles/styles.css"
+<BorderPane minHeight="750" minWidth="1000" stylesheets="@Styles/styles.css"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="sample.Scenes.Controller">
+            fx:controller="sample.Scenes.Controller"
+            styleClass="background">
     <top>
-        <HBox spacing="200">
+        <HBox spacing="100">
+            <BorderPane.margin>
+                <Insets left="20" top="10"/>
+            </BorderPane.margin>
             <HBox spacing="50">
                 <VBox spacing="50">
                     <VBox spacing="10">
@@ -26,7 +31,7 @@
                 <VBox spacing="50">
                     <VBox spacing="10">
                         <TextField fx:id="txt_Function" promptText="Funktion" onKeyPressed="#txt_Text_Changed"/>
-                        <HBox>
+                        <HBox spacing="1">
                             <TextField fx:id="txt_StartValue" promptText="X-Start" onKeyPressed="#txt_Text_Changed"/>
                             <TextField fx:id="txt_EndValue" promptText="X-End" onKeyPressed="#txt_Text_Changed"/>
                         </HBox>
@@ -44,53 +49,59 @@
                             <Button text="Kopieren" fx:id="btn_Copy2" visible="false"/>
                             <Button text="Kopieren" fx:id="btn_Copy3" visible="false"/>
                         </VBox>
-                        <VBox spacing="10">
-                            <Button text="Info" fx:id="btn_Info1" visible="false"/>
-                            <Button text="Info" fx:id="btn_Info2" visible="false"/>
-                            <Button text="Info" fx:id="btn_Info3" visible="false"/>
-                        </VBox>
                     </HBox>
                 </VBox>
             </HBox>
-            <VBox>
-                <LineChart fx:id="lineChart">
-                    <xAxis>
-                        <NumberAxis>
-                            <label>X</label>
-                        </NumberAxis>
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis>
-                            <label>Y</label>
-                        </NumberAxis>
-                    </yAxis>
-                </LineChart>
-            </VBox>
+            <LineChart fx:id="lineChart">
+                <xAxis>
+                    <NumberAxis>
+                        <label>X</label>
+                        <upperBound>50</upperBound>
+                        <lowerBound>-50</lowerBound>
+                        <autoRanging>false</autoRanging>
+                        <tickLabelsVisible>false</tickLabelsVisible>
+                        <tickMarkVisible>false</tickMarkVisible>
+                        <minorTickVisible>false</minorTickVisible>
+                    </NumberAxis>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis>
+                        <label>Y</label>
+                        <lowerBound>-100</lowerBound>
+                        <tickLabelsVisible>false</tickLabelsVisible>
+                        <tickMarkVisible>false</tickMarkVisible>
+                        <minorTickVisible>false</minorTickVisible>
+                    </NumberAxis>
+                </yAxis>
+            </LineChart>
         </HBox>
     </top>
     <center>
-        <VBox>
-            <HBox spacing="20">
-                <ComboBox fx:id="cb_Verfahren1"/>
-                <ComboBox fx:id="cb_Verfahren2"/>
-                <ComboBox fx:id="cb_Verfahren3"/>
+        <HBox spacing="50">
+            <BorderPane.margin>
+                <Insets left="20" bottom="10"/>
+            </BorderPane.margin>
+            <VBox spacing="5">
+                <HBox spacing="20">
+                    <ComboBox fx:id="cb_Verfahren1" promptText="Verfahren 1"/>
+                    <ComboBox fx:id="cb_Verfahren2" promptText="Verfahren 2"/>
+                    <ComboBox fx:id="cb_Verfahren3" promptText="Verfahren 3"/>
+                </HBox>
+                <HBox spacing="20">
+                    <ScrollPane>
+                        <ListView fx:id="lv_container1"/>
+                    </ScrollPane>
+                    <ScrollPane>
+                        <ListView fx:id="lv_container2"/>
+                    </ScrollPane>
+                    <ScrollPane>
+                        <ListView fx:id="lv_container3"/>
+                    </ScrollPane>
+                </HBox>
+            </VBox>
+            <HBox alignment="TOP_CENTER">
+                <Button text="Calculate" onAction="#btn_Calculate_Click" styleClass="primary-button"/>
             </HBox>
-            <HBox spacing="20">
-                <ScrollPane>
-                    <ListView fx:id="lv_container1"/>
-                </ScrollPane>
-                <ScrollPane>
-                    <ListView fx:id="lv_container2"/>
-                </ScrollPane>
-                <ScrollPane>
-                    <ListView fx:id="lv_container3"/>
-                </ScrollPane>
-            </HBox>
-        </VBox>
-    </center>
-    <bottom>
-        <HBox alignment="CENTER_RIGHT">
-            <Button text="Calculate" onAction="#btn_Calculate_Click"/>
         </HBox>
-    </bottom>
+    </center>
 </BorderPane>

@@ -10,12 +10,12 @@ public abstract class Verfahren {
 
     private Expression expression;
     private String function;
-    private int startValue;
-    private int endValue;
+    private double startValue;
+    private double endValue;
     private int accuracy;
     private int maxValue;
 
-    public Verfahren(String function, int start, int end, int accuracy, int maxValue) {
+    public Verfahren(String function, double start, double end, int accuracy, int maxValue) {
         this.function = function;
         this.startValue = start;
         this.endValue = end;
@@ -34,17 +34,15 @@ public abstract class Verfahren {
      */
     public abstract Point[] calculate();
 
-    public abstract String getInformation();
-
     public abstract String toString();
 
 
 
-    protected int getStartValue() {
+    protected double getStartValue() {
         return startValue;
     }
 
-    protected int getEndValue() {
+    protected double getEndValue() {
         return endValue;
     }
 
@@ -75,11 +73,11 @@ public abstract class Verfahren {
         this.expression = function == null ? null : new ExpressionBuilder(function).variable("x").build();
     }
 
-    public void setStartValue(int startValue) {
+    public void setStartValue(double startValue) {
         this.startValue = startValue;
     }
 
-    public void setEndValue(int endValue) {
+    public void setEndValue(double endValue) {
         this.endValue = endValue;
     }
 
