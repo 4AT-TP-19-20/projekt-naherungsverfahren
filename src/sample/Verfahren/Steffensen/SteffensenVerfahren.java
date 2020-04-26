@@ -41,7 +41,7 @@ public class SteffensenVerfahren extends Verfahren {
 
     @Override
     public String toString() {
-        return "Steffensen Verfahren";
+        return "";
     }
 
     private double g(double x) {
