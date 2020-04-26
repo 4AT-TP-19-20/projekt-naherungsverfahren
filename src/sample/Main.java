@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Scenes/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Scenes/MainScene.fxml"));
         primaryStage.setTitle("Näherungsverfahren");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
