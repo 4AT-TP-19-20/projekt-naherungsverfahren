@@ -1,8 +1,12 @@
 package sample.Verfahren.Sekanten;
 
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+import sample.Utility.Funktion;
 import sample.Utility.Point;
 import sample.Verfahren.Verfahren;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Sekantenverfahren extends Verfahren {
@@ -14,13 +18,14 @@ public class Sekantenverfahren extends Verfahren {
     @Override
     public Point[] calculate() {
         ArrayList<Point> points = new ArrayList<>();
+        Expression f = getExpression();
 
-        double xn = Math.max(getStartValue(), getEndValue());
-        double xn_ = Math.min(getStartValue(), getEndValue());
-        double yn = f(xn);
-        double yn_ = f(xn_);
+        double xn = Math.max(getStartValue(),getEndValue());
+        double xn_ = Math.min(getStartValue(),getEndValue());
+        double yn = f.setVariable("x", xn).evaluate();
+        double yn_ = f.setVariable("x", xn_).evaluate();
 
-        addPoint(xn, points);
+        points.add(new Point(roundDouble(xn), roundDouble(yn)));
 
         for (int i = 0; i < getMax(); i++) {
             double temp = (xn_ * yn - xn * yn_)/(yn - yn_);
@@ -28,9 +33,9 @@ public class Sekantenverfahren extends Verfahren {
             xn_ = xn;
             yn_ = yn;
             xn = temp;
-            yn = f(xn);
+            yn = f.setVariable("x", xn).evaluate();
 
-            addPoint(xn, points);
+            points.add(new Point(roundDouble(xn), roundDouble(yn)));
 
             if(roundDouble(yn) == 0.0) {
                 break;
