@@ -64,8 +64,8 @@
                 <yAxis>
                     <NumberAxis>
                         <label>Y</label>
-                        <upperBound>5</upperBound>
-                        <lowerBound>-5</lowerBound>
+                        <upperBound>50</upperBound>
+                        <lowerBound>-50</lowerBound>
                         <autoRanging>false</autoRanging>
                     </NumberAxis>
                 </yAxis>

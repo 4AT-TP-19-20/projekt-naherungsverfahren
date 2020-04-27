@@ -275,28 +275,31 @@ public class Controller {
             ValueAxis<Double> yAxis = (ValueAxis<Double>)lineChart.getYAxis();
             ValueAxis<Double> xAxis = (ValueAxis<Double>)lineChart.getXAxis();
 
+            if(startPosition == null) {
+                return;
+            }
+
             double xUBound = xAxis.getUpperBound();
             double xLBound = xAxis.getLowerBound();
 
             double yUBound = yAxis.getUpperBound();
             double yLBound = yAxis.getLowerBound();
 
-            if(startPosition == null) {
-                return;
-            }
+            double xStep = (xUBound + Math.abs(xLBound)) / lineChart.getWidth();
+            double yStep = (yUBound + Math.abs(yLBound)) / lineChart.getHeight();
 
             double xDir = startPosition.x - mouseEvent.getSceneX();
             double yDir = mouseEvent.getSceneY() - startPosition.y;
 
-            double xVal = xDir < 0 ? -0.1 : xDir == 0 ? 0 : 0.1;
-            double yVal = yDir < 0 ? -0.1 : yDir == 0 ? 0 : 0.1;
+            double xVal = xDir < 0 ? -xStep : xDir == 0 ? 0 : xStep;
+            double yVal = yDir < 0 ? -yStep : yDir == 0 ? 0 : yStep;
 
-            if((xUBound + xVal <= 50 && xVal == 0.1) || (xLBound + xVal >= -50 && xVal == -0.1)) {
+            if((xUBound + xVal <= 50 && xVal == xStep) || (xLBound + xVal >= -50 && xVal == -xStep)) {
                 xAxis.setUpperBound(xUBound + xVal);
                 xAxis.setLowerBound(xLBound + xVal);
             }
 
-            if((yUBound + yVal <= 50 && yVal == 0.1) || (yLBound + yVal >= -50 && yVal == -0.1)) {
+            if((yUBound + yVal <= 50 && yVal == yStep) || (yLBound + yVal >= -50 && yVal == -yStep)) {
                 yAxis.setUpperBound(yUBound + yVal);
                 yAxis.setLowerBound(yLBound + yVal);
             }
