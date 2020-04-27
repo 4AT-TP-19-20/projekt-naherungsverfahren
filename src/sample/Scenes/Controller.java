@@ -4,11 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import sample.Utility.Messages;
@@ -218,7 +220,6 @@ public class Controller {
                     try {
                         double x = (i / 100.0);
                         double y = f.setVariable("x", x).evaluate();
-                        System.out.print("(" + x + "|" + y + ") |");
 
                         if(y != Double.POSITIVE_INFINITY && y != Double.NEGATIVE_INFINITY) {
                             data.getData().add(new XYChart.Data<>(x, y));
@@ -234,6 +235,25 @@ public class Controller {
             }
         } catch (Exception e) {
             lineChart.getData().clear();
+        }
+    }
+
+    public void moveLineChart(ScrollEvent scrollEvent) {
+        if(lineChart.getYAxis() instanceof ValueAxis) {
+            ValueAxis<Double> axis = (ValueAxis<Double>)lineChart.getYAxis();
+            double bound = axis.getUpperBound();
+            double val = 1;
+
+            if(scrollEvent.getDeltaY() < 0) {
+                val *= -1;
+            }
+
+            if(bound - val <= 0 || bound - val > 50) {
+                return;
+            }
+
+            axis.setUpperBound(bound - val);
+            axis.setLowerBound(-bound + val);
         }
     }
 }

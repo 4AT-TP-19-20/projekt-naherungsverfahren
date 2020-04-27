@@ -52,25 +52,21 @@
                     </HBox>
                 </VBox>
             </HBox>
-            <LineChart fx:id="lineChart">
+            <LineChart fx:id="lineChart" onScroll="#moveLineChart">
                 <xAxis>
                     <NumberAxis>
                         <label>X</label>
                         <upperBound>50</upperBound>
                         <lowerBound>-50</lowerBound>
                         <autoRanging>false</autoRanging>
-                        <tickLabelsVisible>false</tickLabelsVisible>
-                        <tickMarkVisible>false</tickMarkVisible>
-                        <minorTickVisible>false</minorTickVisible>
                     </NumberAxis>
                 </xAxis>
                 <yAxis>
                     <NumberAxis>
                         <label>Y</label>
-                        <lowerBound>-100</lowerBound>
-                        <tickLabelsVisible>false</tickLabelsVisible>
-                        <tickMarkVisible>false</tickMarkVisible>
-                        <minorTickVisible>false</minorTickVisible>
+                        <upperBound>5</upperBound>
+                        <lowerBound>-5</lowerBound>
+                        <autoRanging>false</autoRanging>
                     </NumberAxis>
                 </yAxis>
             </LineChart>
