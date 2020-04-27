@@ -43,9 +43,4 @@
 .primary-button {
     -fx-pref-width: 120px;
     -fx-pref-height: 35px;
-    /*-fx-background-color: #00e1ff;*/
-}
-
-.chart-series-line {
-    -fx-background-color: green;
 }

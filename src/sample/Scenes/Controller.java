@@ -215,15 +215,17 @@ public class Controller {
                 XYChart.Series<Double, Double> data = new XYChart.Series<>();
 
                 for(int i = -5000; i <= 5000; i+=5) {
-                    if(i == 0) {
-                        continue;
-                    }
+                    try {
+                        double x = (i / 100.0);
+                        double y = f.setVariable("x", x).evaluate();
+                        System.out.print("(" + x + "|" + y + ") |");
 
-                    double x = (i / 100.0);
-                    double y = f.setVariable("x", x).evaluate();
-
-                    data.getData().add(new XYChart.Data<>(x, y));
+                        if(y != Double.POSITIVE_INFINITY && y != Double.NEGATIVE_INFINITY) {
+                            data.getData().add(new XYChart.Data<>(x, y));
+                        }
+                    } catch (ArithmeticException ignore) {}
                 }
+                System.out.println();
 
                 lineChart.getData().clear();
                 lineChart.setCreateSymbols(false);
