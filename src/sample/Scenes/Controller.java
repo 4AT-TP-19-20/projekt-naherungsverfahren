@@ -7,10 +7,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import sample.Utility.Messages;
@@ -60,6 +57,8 @@ public class Controller {
     private final ArrayList<Label> labels = new ArrayList<>();
     private final ArrayList<Label> lbls = new ArrayList<>();
     private final ArrayList<Button> copyButtons = new ArrayList<>();
+
+    private Point startPosition = null;
 
     @FXML
     public void initialize() {
@@ -214,6 +213,7 @@ public class Controller {
         try {
             Expression f = new ExpressionBuilder(func).variable("x").build();
             if(f != null) {
+                ArrayList<XYChart.Series<Double, Double>> datas = new ArrayList<>();
                 XYChart.Series<Double, Double> data = new XYChart.Series<>();
 
                 for(int i = -5000; i <= 5000; i+=5) {
@@ -221,39 +221,94 @@ public class Controller {
                         double x = (i / 100.0);
                         double y = f.setVariable("x", x).evaluate();
 
-                        if(y != Double.POSITIVE_INFINITY && y != Double.NEGATIVE_INFINITY) {
-                            data.getData().add(new XYChart.Data<>(x, y));
+                        if(y == Double.POSITIVE_INFINITY || y == Double.NEGATIVE_INFINITY) {
+                            throw new ArithmeticException();
                         }
-                    } catch (ArithmeticException ignore) {}
+                        data.getData().add(new XYChart.Data<>(x, y));
+                    } catch (ArithmeticException ignore) {
+                        datas.add(data);
+                        data = new XYChart.Series<>();
+                    }
                 }
-                System.out.println();
+                datas.add(data);
 
                 lineChart.getData().clear();
                 lineChart.setCreateSymbols(false);
                 lineChart.setLegendVisible(false);
-                lineChart.getData().add(data);
+                for(XYChart.Series<Double, Double> d : datas) {
+                    lineChart.getData().add(d);
+                }
             }
         } catch (Exception e) {
             lineChart.getData().clear();
         }
     }
 
-    public void moveLineChart(ScrollEvent scrollEvent) {
-        if(lineChart.getYAxis() instanceof ValueAxis) {
-            ValueAxis<Double> axis = (ValueAxis<Double>)lineChart.getYAxis();
-            double bound = axis.getUpperBound();
+    public void moveLineChartScroll(ScrollEvent scrollEvent) {
+        if(lineChart.getYAxis() instanceof ValueAxis && lineChart.getXAxis() instanceof ValueAxis) {
+            ValueAxis<Double> yAxis = (ValueAxis<Double>)lineChart.getYAxis();
+            ValueAxis<Double> xAxis = (ValueAxis<Double>)lineChart.getXAxis();
+
+            double xBound = xAxis.getUpperBound();
+            double yBound = yAxis.getUpperBound();
+
             double val = 1;
 
             if(scrollEvent.getDeltaY() < 0) {
                 val *= -1;
             }
 
-            if(bound - val <= 0 || bound - val > 50) {
+            if(!(xBound - val <= 0 || xBound - val > 50)) {
+                xAxis.setUpperBound(xBound - val);
+                xAxis.setLowerBound(-xBound + val);
+            }
+
+            if(!(yBound - val <= 0 || yBound - val > 50)) {
+                yAxis.setUpperBound(yBound - val);
+                yAxis.setLowerBound(-yBound + val);
+            }
+        }
+    }
+
+    public void moveLineChartMouse(MouseEvent mouseEvent) {
+        if(lineChart.getYAxis() instanceof ValueAxis && lineChart.getXAxis() instanceof ValueAxis) {
+            ValueAxis<Double> yAxis = (ValueAxis<Double>)lineChart.getYAxis();
+            ValueAxis<Double> xAxis = (ValueAxis<Double>)lineChart.getXAxis();
+
+            double xUBound = xAxis.getUpperBound();
+            double xLBound = xAxis.getLowerBound();
+
+            double yUBound = yAxis.getUpperBound();
+            double yLBound = yAxis.getLowerBound();
+
+            if(startPosition == null) {
                 return;
             }
 
-            axis.setUpperBound(bound - val);
-            axis.setLowerBound(-bound + val);
+            double xDir = startPosition.x - mouseEvent.getSceneX();
+            double yDir = mouseEvent.getSceneY() - startPosition.y;
+
+            double xVal = xDir < 0 ? -0.1 : xDir == 0 ? 0 : 0.1;
+            double yVal = yDir < 0 ? -0.1 : yDir == 0 ? 0 : 0.1;
+
+            if((xUBound + xVal <= 50 && xVal == 0.1) || (xLBound + xVal >= -50 && xVal == -0.1)) {
+                xAxis.setUpperBound(xUBound + xVal);
+                xAxis.setLowerBound(xLBound + xVal);
+            }
+
+            if((yUBound + yVal <= 50 && yVal == 0.1) || (yLBound + yVal >= -50 && yVal == -0.1)) {
+                yAxis.setUpperBound(yUBound + yVal);
+                yAxis.setLowerBound(yLBound + yVal);
+            }
+            startPosition = new Point(mouseEvent.getSceneX(), mouseEvent.getSceneY());
         }
+    }
+
+    public void clickLineChart(MouseEvent mouseEvent) {
+        startPosition = new Point(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+    }
+
+    public void releaseLineChart() {
+        startPosition = null;
     }
 }

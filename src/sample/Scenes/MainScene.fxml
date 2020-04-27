@@ -52,7 +52,7 @@
                     </HBox>
                 </VBox>
             </HBox>
-            <LineChart fx:id="lineChart" onScroll="#moveLineChart">
+            <LineChart fx:id="lineChart" onScroll="#moveLineChartScroll" onMouseDragged="#moveLineChartMouse" onMousePressed="#clickLineChart" onMouseReleased="#releaseLineChart">
                 <xAxis>
                     <NumberAxis>
                         <label>X</label>

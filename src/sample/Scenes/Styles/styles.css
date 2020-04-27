@@ -44,3 +44,7 @@
     -fx-pref-width: 120px;
     -fx-pref-height: 35px;
 }
+
+.chart-series-line {
+    -fx-stroke: orange;
+}
