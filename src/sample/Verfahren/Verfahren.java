@@ -27,6 +27,7 @@ public abstract class Verfahren {
     public Verfahren() {
         this(null , 0, 0, 0, 0);
     }
+
     /**
      * Calculates Points until it reaches zero
      *
